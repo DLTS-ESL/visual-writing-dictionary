@@ -1,150 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>Writing Word Helper</title>
-
+<title>My Writing Word Helper</title>
 
 <style>
-
-/* =========================================
-   GENERAL
-========================================= */
 
 * {
     box-sizing: border-box;
 }
 
 body {
-
     margin: 0;
+    font-family: Arial, Tahoma, sans-serif;
+    background: linear-gradient(135deg, #fff7fb, #eef8ff);
+    min-height: 100vh;
+    color: #26324a;
+}
 
-    font-family:
-        Arial,
-        Tahoma,
-        sans-serif;
+.app {
+    max-width: 1400px;
+    margin: auto;
+    padding: 25px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.header {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 7px 25px rgba(0,0,0,.08);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 900;
+}
+
+.subtitle {
+    margin-top: 8px;
+    color: #71809a;
+    font-size: 17px;
+}
+
+.searchArea {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.search {
+    width: 100%;
+    max-width: 550px;
+    padding: 15px 20px;
+    border-radius: 18px;
+    border: 2px solid #e4e6ee;
+    font-size: 17px;
+    outline: none;
+}
+
+.search:focus {
+    border-color: #665cff;
+}
+
+
+/* ========================================
+   CATEGORY BUTTONS
+======================================== */
+
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.categoryButton {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 18px;
+    background: white;
+    color: #536078;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+    transition: .2s;
+}
+
+.categoryButton:hover {
+    transform: translateY(-3px);
+}
+
+.categoryButton.active {
+    background: #665cff;
+    color: white;
+}
+
+
+/* ========================================
+   CATEGORY TITLE
+======================================== */
+
+.categoryTitle {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.categoryTitle h2 {
+    margin: 0;
+    font-size: 29px;
+}
+
+.categoryTitle p {
+    margin: 6px 0 0;
+    color: #71809a;
+}
+
+.wordCount {
+    text-align: center;
+    color: #8992a5;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+
+/* ========================================
+   FLASH CARDS
+======================================== */
+
+.wordGrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+}
+
+.wordCard {
+    height: 150px;
+    perspective: 1000px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.cardInner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+    transform-style: preserve-3d;
+}
+
+.wordCard.flipped .cardInner {
+    transform: rotateY(180deg);
+}
+
+.cardSide {
+    position: absolute;
+    inset: 0;
+
+    background: white;
+
+    border-radius: 20px;
+    border: 3px solid #e7e9f0;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.07);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    overflow: hidden;
+}
+
+.cardFront {
+    background: linear-gradient(145deg,#fff,#f7f7ff);
+}
+
+.picture {
+    font-size: 55px;
+    line-height: 1;
+}
+
+.tap {
+    margin-top: 12px;
+    font-size: 10px;
+    color: #9aa1b0;
+    font-weight: bold;
+}
+
+.cardBack {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg,#fff,#f1f0ff);
+}
+
+.word {
+    font-size: 22px;
+    font-weight: 900;
+    color: #3c3b75;
+    text-align: center;
+}
+
+.type {
+    margin-top: 7px;
+    font-size: 12px;
+    color: #8992a5;
+    font-weight: bold;
+}
+
+.wordCard:hover {
+    transform: translateY(-4px);
+}
+
+.wordCard:hover .cardSide {
+    border-color: #aaa5ff;
+    box-shadow: 0 9px 20px rgba(0,0,0,.12);
+}
+
+
+/* ========================================
+   NO RESULTS
+======================================== */
+
+.noResults {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
+    border-radius: 20px;
+    color: #788297;
+    font-size: 18px;
+}
+
+
+/* ========================================
+   SENTENCE BUILDER
+======================================== */
+
+.sentenceBuilder {
+    margin-top: 40px;
+
+    background: white;
+
+    border-radius: 30px;
+
+    padding: 30px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.09);
+
+    text-align: center;
+}
+
+.sentenceHeader {
+    margin-bottom: 20px;
+}
+
+.sentenceHeader h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.sentenceHeader p {
+    margin: 7px 0 0;
+    color: #71809a;
+    font-size: 16px;
+}
+
+
+/* SENTENCE BOX */
+
+.sentenceBox {
 
     background:
         linear-gradient(
             135deg,
-            #fff7fb,
-            #eef8ff
+            #f7f5ff,
+            #f0faff
         );
 
-    min-height: 100vh;
+    border: 3px dashed #aaa5ff;
 
-    color: #26324a;
-}
+    border-radius: 23px;
 
+    padding: 28px 20px;
 
-/* =========================================
-   APP
-========================================= */
-
-.app {
-
-    max-width: 1250px;
-
-    margin: auto;
-
-    padding: 25px;
-
-}
-
-
-/* =========================================
-   HEADER
-========================================= */
-
-.header {
-
-    background: white;
-
-    border-radius: 25px;
-
-    padding: 22px 25px;
-
-    box-shadow:
-        0 7px 25px rgba(0,0,0,0.08);
-
-    margin-bottom: 18px;
-
-    text-align: center;
-
-}
-
-
-.title {
-
-    font-size: 34px;
-
-    font-weight: 900;
-
-}
-
-
-.subtitle {
-
-    margin-top: 7px;
-
-    color: #71809a;
-
-    font-size: 17px;
-
-}
-
-
-/* =========================================
-   SEARCH
-========================================= */
-
-.searchArea {
-
-    margin-top: 18px;
+    min-height: 145px;
 
     display: flex;
 
+    flex-direction: column;
+
+    align-items: center;
+
     justify-content: center;
+}
 
+.sentenceLabel {
+    font-size: 13px;
+
+    font-weight: 800;
+
+    color: #8992a5;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 12px;
+}
+
+.sentencePattern {
+    font-size: 30px;
+
+    font-weight: 900;
+
+    color: #3c3b75;
+
+    line-height: 1.4;
+}
+
+.sentenceExample {
+    margin-top: 12px;
+
+    font-size: 19px;
+
+    color: #667085;
+
+    font-weight: 600;
 }
 
 
-.search {
+/* ========================================
+   SENTENCE WORDS
+======================================== */
 
-    width: 100%;
-
-    max-width: 500px;
-
-    padding: 14px 20px;
-
-    border-radius: 18px;
-
-    border: 2px solid #e4e6ee;
-
-    font-size: 17px;
-
-    outline: none;
-
-}
-
-
-.search:focus {
-
-    border-color: #665cff;
-
-}
-
-
-/* =========================================
-   CATEGORY BUTTONS
-========================================= */
-
-.categories {
+.sentenceWords {
 
     display: flex;
 
@@ -154,578 +357,318 @@ body {
 
     flex-wrap: wrap;
 
-    margin-bottom: 20px;
-
+    margin-top: 20px;
 }
 
+.sentenceWord {
 
-.categoryButton {
+    background: #fff;
 
-    border: none;
+    border: 2px solid #e4e6ee;
 
-    padding: 13px 25px;
+    border-radius: 14px;
 
-    border-radius: 18px;
-
-    background: white;
-
-    color: #536078;
-
-    font-size: 17px;
+    padding: 10px 16px;
 
     font-weight: 800;
 
-    cursor: pointer;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.07);
-
-    transition: 0.2s;
-
+    color: #536078;
 }
 
 
-.categoryButton:hover {
+/* ========================================
+   NEXT SENTENCE BUTTON
+======================================== */
 
-    transform:
-        translateY(-3px);
+.nextSentence {
 
-}
+    margin-top: 22px;
 
-
-.categoryButton.active {
+    border: none;
 
     background: #665cff;
 
     color: white;
 
-}
-
-
-/* =========================================
-   CATEGORY TITLE
-========================================= */
-
-.categoryTitle {
-
-    text-align: center;
-
-    margin-bottom: 15px;
-
-}
-
-
-.categoryTitle h2 {
-
-    margin: 0;
-
-    font-size: 27px;
-
-}
-
-
-.categoryTitle p {
-
-    margin: 5px 0 0;
-
-    color: #71809a;
-
-}
-
-
-/* =========================================
-   WORD COUNT
-========================================= */
-
-.wordCount {
-
-    text-align: center;
-
-    color: #8992a5;
-
-    font-size: 14px;
-
-    margin-bottom: 15px;
-
-}
-
-
-/* =========================================
-   WORD GRID
-========================================= */
-
-.wordGrid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(8, 1fr);
-
-    gap: 12px;
-
-}
-
-
-/* =========================================
-   FLIP CARD
-========================================= */
-
-.wordCard {
-
-    height: 145px;
-
-    perspective: 1000px;
-
-    cursor: pointer;
-
-    background: transparent;
-
-    border: none;
-
-    padding: 0;
-
-}
-
-
-.cardInner {
-
-    position: relative;
-
-    width: 100%;
-
-    height: 100%;
-
-    transition:
-        transform 0.6s
-        cubic-bezier(
-            .2,
-            .7,
-            .2,
-            1
-        );
-
-    transform-style:
-        preserve-3d;
-
-}
-
-
-.wordCard.flipped
-.cardInner {
-
-    transform:
-        rotateY(180deg);
-
-}
-
-
-/* =========================================
-   CARD SIDES
-========================================= */
-
-.cardSide {
-
-    position: absolute;
-
-    inset: 0;
-
-    background: white;
-
-    border-radius: 20px;
-
-    border: 3px solid #e7e9f0;
-
-    box-shadow:
-        0 5px 15px
-        rgba(0,0,0,0.07);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    flex-direction: column;
-
-    backface-visibility:
-        hidden;
-
-    -webkit-backface-visibility:
-        hidden;
-
-    overflow: hidden;
-
-}
-
-
-/* =========================================
-   FRONT
-========================================= */
-
-.cardFront {
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f7f7ff
-        );
-
-}
-
-
-.picture {
-
-    font-size: 60px;
-
-    line-height: 1;
-
-}
-
-
-.tap {
-
-    margin-top: 12px;
-
-    font-size: 11px;
-
-    color: #9aa1b0;
-
-    font-weight: bold;
-
-}
-
-
-/* =========================================
-   BACK
-========================================= */
-
-.cardBack {
-
-    transform:
-        rotateY(180deg);
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f1f0ff
-        );
-
-}
-
-
-.word {
-
-    font-size: 24px;
+    font-size: 17px;
 
     font-weight: 900;
 
-    color: #3c3b75;
+    padding: 15px 32px;
 
-}
+    border-radius: 18px;
 
-
-.type {
-
-    margin-top: 7px;
-
-    font-size: 12px;
-
-    color: #8992a5;
-
-    font-weight: bold;
-
-}
-
-
-/* =========================================
-   HOVER
-========================================= */
-
-.wordCard:hover {
-
-    transform:
-        translateY(-4px);
-
-}
-
-
-.wordCard:hover
-.cardSide {
-
-    border-color:
-        #aaa5ff;
+    cursor: pointer;
 
     box-shadow:
-        0 9px 20px
-        rgba(0,0,0,0.12);
+        0 5px 15px
+        rgba(102,92,255,.25);
 
+    transition: .2s;
+}
+
+.nextSentence:hover {
+
+    transform: translateY(-3px);
+
+    background: #554be8;
+}
+
+.nextSentence:active {
+
+    transform: scale(.97);
 }
 
 
-/* =========================================
-   NO RESULTS
-========================================= */
-
-.noResults {
-
-    text-align: center;
-
-    padding: 50px 20px;
-
-    background: white;
-
-    border-radius: 20px;
-
-    color: #788297;
-
-    font-size: 18px;
-
-}
-
-
-/* =========================================
+/* ========================================
    RESPONSIVE
-========================================= */
+======================================== */
 
-@media (max-width: 1050px) {
+@media(max-width:1100px) {
 
     .wordGrid {
-
-        grid-template-columns:
-            repeat(6, 1fr);
-
+        grid-template-columns: repeat(6,1fr);
     }
 
 }
 
-
-@media (max-width: 800px) {
+@media(max-width:850px) {
 
     .wordGrid {
-
-        grid-template-columns:
-            repeat(5, 1fr);
-
+        grid-template-columns: repeat(5,1fr);
     }
 
 }
 
-
-@media (max-width: 600px) {
+@media(max-width:650px) {
 
     .app {
-
         padding: 12px;
-
     }
-
 
     .title {
-
-        font-size: 27px;
-
+        font-size: 28px;
     }
-
 
     .subtitle {
-
         font-size: 15px;
-
     }
-
 
     .wordGrid {
-
-        grid-template-columns:
-            repeat(4, 1fr);
-
+        grid-template-columns: repeat(4,1fr);
         gap: 8px;
-
     }
-
 
     .wordCard {
-
         height: 125px;
-
     }
-
 
     .picture {
-
-        font-size: 48px;
-
+        font-size: 45px;
     }
-
 
     .word {
+        font-size: 18px;
+    }
 
-        font-size: 19px;
+    .sentenceBuilder {
+        padding: 22px 14px;
+    }
 
+    .sentencePattern {
+        font-size: 23px;
+    }
+
+    .sentenceExample {
+        font-size: 17px;
     }
 
 }
 
-
-@media (max-width: 400px) {
+@media(max-width:420px) {
 
     .wordGrid {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
+        grid-template-columns: repeat(3,1fr);
     }
 
 }
 
 
-/* =========================================
+/* ========================================
    REDUCED MOTION
-========================================= */
+======================================== */
 
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce) {
 
     .cardInner {
-
         transition: none;
-
     }
 
     .wordCard {
-
         transition: none;
-
     }
 
 }
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div class="app">
 
 
-<!-- ======================================
-     HEADER
-======================================= -->
+    <!-- ====================================
+         HEADER
+    ===================================== -->
 
-<div class="header">
+    <div class="header">
 
-    <div class="title">
+        <div class="title">
+            ✏️ My Writing Word Helper
+        </div>
 
-        ✏️ My Writing Word Helper
+        <div class="subtitle">
+            Look at the picture → Click → Discover the word!
+        </div>
+
+        <div class="searchArea">
+
+            <input
+                id="search"
+                class="search"
+                type="text"
+                placeholder="🔍 Search for a word..."
+                autocomplete="off"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- ====================================
+         CATEGORIES
+    ===================================== -->
+
+    <div class="categories">
+
+        <button
+            class="categoryButton active"
+            data-category="nouns">
+
+            🧸 Nouns
+
+        </button>
+
+
+        <button
+            class="categoryButton"
+            data-category="verbs">
+
+            🏃 Verbs
+
+        </button>
+
+
+        <button
+            class="categoryButton"
+            data-category="adjectives">
+
+            🌈 Adjectives
+
+        </button>
 
     </div>
 
 
-    <div class="subtitle">
+    <!-- ====================================
+         CATEGORY TITLE
+    ===================================== -->
 
-        Look at the picture → Click → Discover the word!
+    <div class="categoryTitle">
 
-    </div>
+        <h2 id="categoryTitle">
+            🧸 Nouns
+        </h2>
 
-
-    <div class="searchArea">
-
-        <input
-
-            id="search"
-
-            class="search"
-
-            type="text"
-
-            placeholder="🔍 Search for a word..."
-
-            autocomplete="off"
-
-        >
+        <p id="categoryDescription">
+            People, places, animals, and things
+        </p>
 
     </div>
 
-</div>
+
+    <div
+        class="wordCount"
+        id="wordCount">
+    </div>
 
 
-<!-- ======================================
-     CATEGORY BUTTONS
-======================================= -->
+    <!-- ====================================
+         FLASH CARDS
+    ===================================== -->
 
-<div class="categories">
-
-
-    <button
-        class="categoryButton active"
-        data-category="nouns"
-    >
-
-        🧸 Nouns
-
-    </button>
+    <div
+        class="wordGrid"
+        id="wordGrid">
+    </div>
 
 
-    <button
-        class="categoryButton"
-        data-category="verbs"
-    >
+    <!-- ====================================
+         SENTENCE BUILDER
+    ===================================== -->
 
-        🏃 Verbs
+    <div class="sentenceBuilder">
 
-    </button>
+        <div class="sentenceHeader">
 
+            <h2>
+                🧩 Sentence Builder
+            </h2>
 
-    <button
-        class="categoryButton"
-        data-category="adjectives"
-    >
+            <p>
+                Use the words above to help you write!
+            </p>
 
-        🌈 Adjectives
-
-    </button>
-
-
-</div>
+        </div>
 
 
-<!-- ======================================
-     CATEGORY TITLE
-======================================= -->
+        <div class="sentenceBox">
 
-<div class="categoryTitle">
+            <div class="sentenceLabel">
+                Sentence Pattern
+            </div>
 
-    <h2 id="categoryTitle">
-        🧸 Nouns
-    </h2>
+            <div
+                class="sentencePattern"
+                id="sentencePattern">
+            </div>
 
-    <p id="categoryDescription">
-        People, places, animals, and things
-    </p>
+            <div
+                class="sentenceExample"
+                id="sentenceExample">
+            </div>
 
-</div>
-
-
-<div
-    class="wordCount"
-    id="wordCount"
->
-</div>
+        </div>
 
 
-<!-- ======================================
-     WORD GRID
-======================================= -->
+        <div
+            class="sentenceWords"
+            id="sentenceWords">
+        </div>
 
-<div
-    class="wordGrid"
-    id="wordGrid"
-></div>
 
+        <button
+            class="nextSentence"
+            id="nextSentence">
+
+            ➡️ Next Sentence
+
+        </button>
+
+    </div>
 
 </div>
 
@@ -733,293 +676,518 @@ body {
 <script>
 
 
-/* =========================================
+/* ========================================
    WORD DATA
-========================================= */
+======================================== */
 
 const wordData = {
 
 
-/* =========================================
-   NOUNS
-========================================= */
+    /* ====================================
+       200 NOUNS
+    ==================================== */
 
-nouns: [
+    nouns: [
 
-    ["🐶", "dog"],
-    ["🐱", "cat"],
-    ["🐭", "mouse"],
-    ["🐰", "rabbit"],
-    ["🐻", "bear"],
-    ["🐼", "panda"],
-    ["🦁", "lion"],
-    ["🐯", "tiger"],
-    ["🐘", "elephant"],
-    ["🐒", "monkey"],
+        // ANIMALS
 
-    ["🐟", "fish"],
-    ["🐦", "bird"],
-    ["🦋", "butterfly"],
-    ["🐝", "bee"],
-    ["🐢", "turtle"],
-    ["🐍", "snake"],
-    ["🐸", "frog"],
-    ["🦒", "giraffe"],
-    ["🐴", "horse"],
-    ["🐄", "cow"],
-
-    ["🏠", "house"],
-    ["🏫", "school"],
-    ["🏥", "hospital"],
-    ["🌳", "tree"],
-    ["🌸", "flower"],
-    ["☀️", "sun"],
-    ["🌙", "moon"],
-    ["⭐", "star"],
-    ["☁️", "cloud"],
-    ["🌈", "rainbow"],
-
-    ["📚", "book"],
-    ["✏️", "pencil"],
-    ["🎒", "bag"],
-    ["⚽", "ball"],
-    ["🚗", "car"],
-    ["🚲", "bike"],
-    ["🍎", "apple"],
-    ["🍌", "banana"],
-    ["🍕", "pizza"],
-    ["🍦", "ice cream"]
-
-],
-
-
-/* =========================================
-   VERBS
-========================================= */
-
-verbs: [
-
-    ["🏃", "run"],
-    ["🚶", "walk"],
-    ["🦘", "jump"],
-    ["🏊", "swim"],
-    ["💃", "dance"],
-    ["🎤", "sing"],
-    ["😂", "laugh"],
-    ["😭", "cry"],
-    ["😴", "sleep"],
-    ["👀", "look"],
-
-    ["👂", "listen"],
-    ["🗣️", "talk"],
-    ["📖", "read"],
-    ["✍️", "write"],
-    ["🎨", "draw"],
-    ["📚", "study"],
-    ["🧠", "think"],
-    ["💡", "learn"],
-    ["❓", "ask"],
-    ["💬", "answer"],
-
-    ["🍎", "eat"],
-    ["🥤", "drink"],
-    ["🍳", "cook"],
-    ["🛒", "buy"],
-    ["🎁", "give"],
-    ["🤲", "take"],
-    ["🤝", "help"],
-    ["🧹", "clean"],
-    ["🧺", "wash"],
-    ["🧹", "sweep"],
-
-    ["⚽", "kick"],
-    ["🤲", "throw"],
-    ["👐", "catch"],
-    ["🚪", "open"],
-    ["🔒", "close"],
-    ["🪑", "sit"],
-    ["🧍", "stand"],
-    ["🧗", "climb"],
-    ["🎒", "carry"],
-    ["🏠", "build"]
-
-],
+        ["🐶","dog"],
+        ["🐱","cat"],
+        ["🐭","mouse"],
+        ["🐰","rabbit"],
+        ["🐻","bear"],
+        ["🐼","panda"],
+        ["🦁","lion"],
+        ["🐯","tiger"],
+        ["🐘","elephant"],
+        ["🐒","monkey"],
+        ["🐟","fish"],
+        ["🐦","bird"],
+        ["🦋","butterfly"],
+        ["🐝","bee"],
+        ["🐢","turtle"],
+        ["🐍","snake"],
+        ["🐸","frog"],
+        ["🦒","giraffe"],
+        ["🐴","horse"],
+        ["🐄","cow"],
+        ["🐷","pig"],
+        ["🐔","chicken"],
+        ["🦆","duck"],
+        ["🐑","sheep"],
+        ["🐐","goat"],
+        ["🦓","zebra"],
+        ["🦊","fox"],
+        ["🐺","wolf"],
+        ["🦀","crab"],
+        ["🐙","octopus"],
+        ["🦈","shark"],
+        ["🐋","whale"],
+        ["🐬","dolphin"],
+        ["🐊","crocodile"],
+        ["🦎","lizard"],
+        ["🐿️","squirrel"],
+        ["🦔","hedgehog"],
+        ["🦉","owl"],
+        ["🦅","eagle"],
+        ["🦜","parrot"],
+        ["🦩","flamingo"],
+        ["🦚","peacock"],
+        ["🐫","camel"],
+        ["🦘","kangaroo"],
+        ["🦍","gorilla"],
+        ["🦛","hippo"],
+        ["🦏","rhino"],
+        ["🐆","leopard"],
+        ["🐅","cheetah"],
+        ["🐕","puppy"],
 
 
-/* =========================================
-   ADJECTIVES
-========================================= */
+        // PEOPLE
 
-adjectives: [
+        ["👦","boy"],
+        ["👧","girl"],
+        ["🧒","child"],
+        ["👨","man"],
+        ["👩","woman"],
+        ["👶","baby"],
+        ["👴","grandfather"],
+        ["👵","grandmother"],
+        ["👨‍👩‍👧‍👦","family"],
+        ["🧑‍🏫","teacher"],
+        ["👨‍⚕️","doctor"],
+        ["👩‍⚕️","nurse"],
+        ["👮","police officer"],
+        ["👨‍🚒","firefighter"],
+        ["👨‍🍳","chef"],
+        ["👨‍🎨","artist"],
+        ["👨‍🔧","mechanic"],
+        ["🧑‍🚀","astronaut"],
+        ["👨‍🌾","farmer"],
+        ["🧑‍✈️","pilot"],
+        ["🧑‍🎤","singer"],
+        ["🏃","runner"],
+        ["⚽","player"],
+        ["👑","king"],
+        ["👸","queen"],
 
-    ["😀", "happy"],
-    ["😢", "sad"],
-    ["😡", "angry"],
-    ["😨", "scared"],
-    ["😴", "tired"],
-    ["🤩", "excited"],
-    ["🥱", "bored"],
-    ["😮", "surprised"],
-    ["❤️", "kind"],
-    ["😈", "naughty"],
 
-    ["🐘", "big"],
-    ["🐜", "small"],
-    ["📏", "long"],
-    ["📐", "short"],
-    ["🏢", "tall"],
-    ["🐭", "tiny"],
-    ["🪨", "heavy"],
-    ["🪶", "light"],
-    ["🐢", "slow"],
-    ["🚀", "fast"],
+        // PLACES AND NATURE
 
-    ["🔥", "hot"],
-    ["🧊", "cold"],
-    ["💧", "wet"],
-    ["🏜️", "dry"],
-    ["🍭", "sweet"],
-    ["🍋", "sour"],
-    ["🌶️", "spicy"],
-    ["🧂", "salty"],
-    ["🍋", "bitter"],
-    ["🧊", "cool"],
+        ["🏠","house"],
+        ["🏫","school"],
+        ["🏥","hospital"],
+        ["🏪","shop"],
+        ["🏖️","beach"],
+        ["🏞️","park"],
+        ["🌳","tree"],
+        ["🌸","flower"],
+        ["🌱","plant"],
+        ["☀️","sun"],
+        ["🌙","moon"],
+        ["⭐","star"],
+        ["☁️","cloud"],
+        ["🌈","rainbow"],
+        ["🌧️","rain"],
+        ["❄️","snow"],
+        ["🌊","ocean"],
+        ["🏔️","mountain"],
+        ["🌲","forest"],
+        ["🏝️","island"],
+        ["🏙️","city"],
+        ["🏡","garden"],
+        ["🌋","volcano"],
+        ["🏜️","desert"],
+        ["🌾","field"],
+        ["🏕️","camp"],
+        ["⛺","tent"],
+        ["🏰","castle"],
+        ["🏛️","museum"],
+        ["📚","library"],
+        ["🏦","bank"],
+        ["🍽️","restaurant"],
+        ["🏨","hotel"],
+        ["✈️","airport"],
+        ["🚉","station"],
+        ["🛝","playground"],
 
-    ["☀️", "bright"],
-    ["🌑", "dark"],
-    ["🧼", "clean"],
-    ["🗑️", "dirty"],
-    ["✨", "beautiful"],
-    ["👾", "ugly"],
-    ["🧸", "soft"],
-    ["🪨", "hard"],
-    ["🆕", "new"],
-    ["🏚️", "old"]
 
-]
+        // SCHOOL AND CLASSROOM
+
+        ["📚","book"],
+        ["📖","story"],
+        ["✏️","pencil"],
+        ["🖊️","pen"],
+        ["📓","notebook"],
+        ["🎒","bag"],
+        ["📏","ruler"],
+        ["✂️","scissors"],
+        ["🖍️","crayon"],
+        ["🧮","calculator"],
+        ["🪑","chair"],
+        ["🪟","window"],
+        ["🚪","door"],
+        ["🖥️","computer"],
+        ["⌨️","keyboard"],
+        ["🖱️","mouse"],
+        ["📋","paper"],
+        ["📄","page"],
+        ["🗂️","folder"],
+        ["🧾","worksheet"],
+        ["📝","homework"],
+        ["🎨","paint"],
+        ["🖌️","brush"],
+        ["📐","triangle"],
+        ["🔢","number"],
+        ["🔤","letter"],
+        ["🧩","puzzle"],
+        ["🎲","game"],
+        ["🔔","bell"],
+        ["⏰","clock"],
+        ["🗺️","map"],
+        ["🌍","globe"],
+        ["🔬","science"],
+        ["🎵","music"],
+        ["🎭","drama"],
+        ["🏆","prize"],
+
+
+        // EVERYDAY OBJECTS
+
+        ["📱","phone"],
+        ["⌚","watch"],
+        ["🔑","key"],
+        ["🎁","gift"],
+        ["🧸","toy"],
+        ["⚽","ball"],
+        ["🏀","basketball"],
+        ["🏈","football"],
+        ["🎾","tennis ball"],
+        ["🏸","shuttlecock"],
+        ["🎸","guitar"],
+        ["🎹","piano"],
+        ["🥁","drum"],
+        ["🎺","trumpet"],
+        ["📷","camera"],
+        ["🎧","headphones"],
+        ["💡","lamp"],
+        ["🛏️","bed"],
+        ["🛋️","sofa"],
+        ["🪥","toothbrush"],
+        ["🧼","soap"],
+        ["🧴","shampoo"],
+        ["🪞","mirror"],
+        ["🧺","basket"],
+        ["🧹","broom"],
+        ["🧤","glove"],
+        ["👟","shoe"],
+        ["👕","shirt"],
+        ["👖","pants"],
+        ["🎩","hat"],
+
+
+        // TRANSPORT
+
+        ["🚗","car"],
+        ["🚌","bus"],
+        ["🚲","bike"],
+        ["🚂","train"],
+        ["✈️","airplane"],
+        ["🚢","ship"],
+        ["🚕","taxi"],
+        ["🚑","ambulance"],
+        ["🚒","fire truck"],
+        ["🚁","helicopter"],
+
+
+        // FOOD AND DRINK
+
+        ["🍎","apple"],
+        ["🍌","banana"],
+        ["🍊","orange"],
+        ["🍓","strawberry"],
+        ["🍉","watermelon"],
+        ["🍇","grapes"],
+        ["🥭","mango"],
+        ["🍕","pizza"],
+        ["🍔","burger"],
+        ["🍟","fries"],
+        ["🍦","ice cream"],
+        ["🍰","cake"],
+        ["🍪","cookie"],
+        ["🥪","sandwich"],
+        ["🥛","milk"]
+
+    ],
+
+
+    /* ====================================
+       50 VERBS
+    ==================================== */
+
+    verbs: [
+
+        ["🏃","run"],
+        ["🚶","walk"],
+        ["🦘","jump"],
+        ["🏊","swim"],
+        ["💃","dance"],
+        ["🎤","sing"],
+        ["😂","laugh"],
+        ["😭","cry"],
+        ["😴","sleep"],
+        ["👀","look"],
+
+        ["👂","listen"],
+        ["🗣️","talk"],
+        ["📖","read"],
+        ["✍️","write"],
+        ["🎨","draw"],
+        ["📚","study"],
+        ["🧠","think"],
+        ["💡","learn"],
+        ["❓","ask"],
+        ["💬","answer"],
+
+        ["🍎","eat"],
+        ["🥤","drink"],
+        ["🍳","cook"],
+        ["🛒","buy"],
+        ["🎁","give"],
+        ["🤲","take"],
+        ["🤝","help"],
+        ["🧹","clean"],
+        ["🧺","wash"],
+        ["🧹","sweep"],
+
+        ["⚽","kick"],
+        ["🤲","throw"],
+        ["👐","catch"],
+        ["🚪","open"],
+        ["🔒","close"],
+        ["🪑","sit"],
+        ["🧍","stand"],
+        ["🧗","climb"],
+        ["🎒","carry"],
+        ["🏠","build"],
+
+        ["🎯","play"],
+        ["🏃","chase"],
+        ["🚪","enter"],
+        ["🚶","leave"],
+        ["😊","smile"],
+        ["👋","wave"],
+        ["👉","point"],
+        ["👃","smell"],
+        ["👅","taste"],
+        ["❤️","love"]
+
+    ],
+
+
+    /* ====================================
+       100 ADJECTIVES
+    ==================================== */
+
+    adjectives: [
+
+        // FEELINGS
+
+        ["😀","happy"],
+        ["😢","sad"],
+        ["😡","angry"],
+        ["😨","scared"],
+        ["😴","tired"],
+        ["🤩","excited"],
+        ["🥱","bored"],
+        ["😮","surprised"],
+        ["❤️","kind"],
+        ["😈","naughty"],
+        ["😊","friendly"],
+        ["😠","mean"],
+        ["😌","calm"],
+        ["🦸","brave"],
+        ["😟","worried"],
+        ["😎","proud"],
+        ["🥰","loving"],
+        ["😳","shy"],
+        ["🤣","funny"],
+        ["🤗","helpful"],
+
+
+        // SIZE AND SHAPE
+
+        ["🐘","big"],
+        ["🐜","small"],
+        ["📏","long"],
+        ["📐","short"],
+        ["🏢","tall"],
+        ["🐭","tiny"],
+        ["🪨","heavy"],
+        ["🪶","light"],
+        ["🐢","slow"],
+        ["🚀","fast"],
+        ["⭕","round"],
+        ["⬜","square"],
+        ["📦","thick"],
+        ["📄","thin"],
+        ["📈","high"],
+        ["⬇️","low"],
+        ["↔️","wide"],
+        ["↕️","narrow"],
+        ["🏔️","large"],
+        ["🔹","little"],
+
+
+        // COLORS
+
+        ["🔴","red"],
+        ["🔵","blue"],
+        ["🟢","green"],
+        ["🟡","yellow"],
+        ["🟠","orange"],
+        ["🟣","purple"],
+        ["🩷","pink"],
+        ["🟤","brown"],
+        ["⚫","black"],
+        ["⚪","white"],
+        ["🩶","gray"],
+        ["🌈","colorful"],
+        ["🌑","dark"],
+        ["☀️","bright"],
+        ["✨","shiny"],
+
+
+        // TEMPERATURE / TASTE / TEXTURE
+
+        ["🔥","hot"],
+        ["🧊","cold"],
+        ["💧","wet"],
+        ["🏜️","dry"],
+        ["🍭","sweet"],
+        ["🍋","sour"],
+        ["🌶️","spicy"],
+        ["🧂","salty"],
+        ["🍋","bitter"],
+        ["🧊","cool"],
+        ["🧸","soft"],
+        ["🪨","hard"],
+        ["🪶","smooth"],
+        ["🪵","rough"],
+        ["💦","sticky"],
+        ["🍮","creamy"],
+        ["🥨","crunchy"],
+        ["🍞","fresh"],
+        ["🔥","warm"],
+        ["❄️","freezing"],
+
+
+        // APPEARANCE AND CONDITION
+
+        ["🧼","clean"],
+        ["🗑️","dirty"],
+        ["✨","beautiful"],
+        ["👾","ugly"],
+        ["🆕","new"],
+        ["🏚️","old"],
+        ["💪","strong"],
+        ["🪶","weak"],
+        ["👑","rich"],
+        ["💸","poor"],
+        ["🔊","loud"],
+        ["🤫","quiet"],
+        ["🏃","busy"],
+        ["🐢","lazy"],
+        ["🧠","clever"],
+        ["🤓","smart"],
+        ["⚡","quick"],
+        ["🐌","slow"],
+        ["🧹","tidy"],
+        ["🌪️","messy"],
+        ["🧸","cute"],
+        ["🌟","special"],
+        ["🎉","fun"],
+        ["💎","expensive"],
+        ["🪙","cheap"]
+
+    ]
 
 };
 
 
-/* =========================================
+/* ========================================
    CATEGORY INFORMATION
-========================================= */
+======================================== */
 
 const categoryInfo = {
 
     nouns: {
-
         title: "🧸 Nouns",
-
-        description:
-            "People, places, animals, and things"
-
+        description: "People, places, animals, and things"
     },
 
     verbs: {
-
         title: "🏃 Verbs",
-
-        description:
-            "Action words — things people and animals do"
-
+        description: "Action words — things people and animals do"
     },
 
     adjectives: {
-
         title: "🌈 Adjectives",
-
-        description:
-            "Words that describe people, animals, places, and things"
-
+        description: "Words that describe people, animals, places, and things"
     }
 
 };
 
 
-/* =========================================
-   CURRENT CATEGORY
-========================================= */
+let currentCategory = "nouns";
 
-let currentCategory =
-    "nouns";
-
-
-/* =========================================
-   ELEMENTS
-========================================= */
 
 const grid =
-    document.getElementById(
-        "wordGrid"
-    );
-
+    document.getElementById("wordGrid");
 
 const search =
-    document.getElementById(
-        "search"
-    );
-
+    document.getElementById("search");
 
 const categoryTitle =
-    document.getElementById(
-        "categoryTitle"
-    );
-
+    document.getElementById("categoryTitle");
 
 const categoryDescription =
-    document.getElementById(
-        "categoryDescription"
-    );
-
+    document.getElementById("categoryDescription");
 
 const wordCount =
-    document.getElementById(
-        "wordCount"
-    );
+    document.getElementById("wordCount");
 
 
-/* =========================================
-   DISPLAY WORDS
-========================================= */
+/* ========================================
+   DISPLAY FLASH CARDS
+======================================== */
 
 function displayWords() {
 
     grid.innerHTML = "";
 
-
     const searchText =
-        search.value
-        .toLowerCase()
-        .trim();
-
+        search.value.toLowerCase().trim();
 
     const words =
-        wordData[currentCategory]
-        .filter(item => {
-
-            return item[1]
+        wordData[currentCategory].filter(
+            item =>
+                item[1]
                 .toLowerCase()
-                .includes(searchText);
-
-        });
+                .includes(searchText)
+        );
 
 
     categoryTitle.textContent =
-        categoryInfo[
-            currentCategory
-        ].title;
+        categoryInfo[currentCategory].title;
 
 
     categoryDescription.textContent =
-        categoryInfo[
-            currentCategory
-        ].description;
+        categoryInfo[currentCategory].description;
 
 
     wordCount.textContent =
-        words.length +
-        " words";
+        words.length + " words";
 
 
     if (words.length === 0) {
@@ -1028,8 +1196,7 @@ function displayWords() {
 
             <div
                 class="noResults"
-                style="grid-column:1/-1"
-            >
+                style="grid-column:1/-1">
 
                 🔍 No words found.
 
@@ -1042,34 +1209,24 @@ function displayWords() {
         `;
 
         return;
-
     }
 
 
-    words.forEach(
-        item => {
-
+    words.forEach(item => {
 
         const card =
-            document.createElement(
-                "button"
-            );
+            document.createElement("button");
 
 
-        card.type =
-            "button";
+        card.type = "button";
 
-
-        card.className =
-            "wordCard";
+        card.className = "wordCard";
 
 
         card.innerHTML = `
 
             <div class="cardInner">
 
-
-                <!-- FRONT -->
 
                 <div class="cardSide cardFront">
 
@@ -1088,8 +1245,6 @@ function displayWords() {
 
                 </div>
 
-
-                <!-- BACK -->
 
                 <div class="cardSide cardBack">
 
@@ -1116,7 +1271,7 @@ function displayWords() {
 
         card.addEventListener(
             "click",
-            function() {
+            () => {
 
                 card.classList.toggle(
                     "flipped"
@@ -1133,33 +1288,28 @@ function displayWords() {
 }
 
 
-/* =========================================
+/* ========================================
    CATEGORY BUTTONS
-========================================= */
+======================================== */
 
 document
-    .querySelectorAll(
-        ".categoryButton"
-    )
-    .forEach(
-        button => {
+.querySelectorAll(".categoryButton")
+.forEach(button => {
 
-
-        button.addEventListener(
-            "click",
-            function() {
+    button.addEventListener(
+        "click",
+        function() {
 
 
             document
-                .querySelectorAll(
-                    ".categoryButton"
-                )
-                .forEach(
-                    b =>
-                    b.classList.remove(
-                        "active"
-                    )
+            .querySelectorAll(".categoryButton")
+            .forEach(b => {
+
+                b.classList.remove(
+                    "active"
                 );
+
+            });
 
 
             button.classList.add(
@@ -1176,14 +1326,15 @@ document
 
             displayWords();
 
-        });
+        }
+    );
 
-    });
+});
 
 
-/* =========================================
+/* ========================================
    SEARCH
-========================================= */
+======================================== */
 
 search.addEventListener(
     "input",
@@ -1191,16 +1342,343 @@ search.addEventListener(
 );
 
 
-/* =========================================
+/* ========================================
+   SENTENCE BUILDER
+======================================== */
+
+const sentences = [
+
+    {
+        pattern: "I see a ___ .",
+        example: "I see a dog.",
+        words: [
+            "I",
+            "see",
+            "a",
+            "dog"
+        ]
+    },
+
+    {
+        pattern: "I have a ___ .",
+        example: "I have a pencil.",
+        words: [
+            "I",
+            "have",
+            "a",
+            "pencil"
+        ]
+    },
+
+    {
+        pattern: "The ___ is ___ .",
+        example: "The dog is happy.",
+        words: [
+            "The",
+            "dog",
+            "is",
+            "happy"
+        ]
+    },
+
+    {
+        pattern: "The ___ is ___ing .",
+        example: "The boy is running.",
+        words: [
+            "The",
+            "boy",
+            "is",
+            "running"
+        ]
+    },
+
+    {
+        pattern: "I like the ___ .",
+        example: "I like the rainbow.",
+        words: [
+            "I",
+            "like",
+            "the",
+            "rainbow"
+        ]
+    },
+
+    {
+        pattern: "I can ___ .",
+        example: "I can swim.",
+        words: [
+            "I",
+            "can",
+            "swim"
+        ]
+    },
+
+    {
+        pattern: "I am ___ .",
+        example: "I am excited.",
+        words: [
+            "I",
+            "am",
+            "excited"
+        ]
+    },
+
+    {
+        pattern: "The ___ can ___ .",
+        example: "The monkey can jump.",
+        words: [
+            "The",
+            "monkey",
+            "can",
+            "jump"
+        ]
+    },
+
+    {
+        pattern: "I see a ___ ___ .",
+        example: "I see a big elephant.",
+        words: [
+            "I",
+            "see",
+            "a",
+            "big",
+            "elephant"
+        ]
+    },
+
+    {
+        pattern: "The ___ is ___ .",
+        example: "The house is big.",
+        words: [
+            "The",
+            "house",
+            "is",
+            "big"
+        ]
+    },
+
+    {
+        pattern: "The ___ can ___ .",
+        example: "The bird can fly.",
+        words: [
+            "The",
+            "bird",
+            "can",
+            "fly"
+        ]
+    },
+
+    {
+        pattern: "I like ___ .",
+        example: "I like pizza.",
+        words: [
+            "I",
+            "like",
+            "pizza"
+        ]
+    },
+
+    {
+        pattern: "I want ___ .",
+        example: "I want ice cream.",
+        words: [
+            "I",
+            "want",
+            "ice cream"
+        ]
+    },
+
+    {
+        pattern: "This is a ___ .",
+        example: "This is a school.",
+        words: [
+            "This",
+            "is",
+            "a",
+            "school"
+        ]
+    },
+
+    {
+        pattern: "The ___ looks ___ .",
+        example: "The flower looks beautiful.",
+        words: [
+            "The",
+            "flower",
+            "looks",
+            "beautiful"
+        ]
+    },
+
+    {
+        pattern: "The ___ has a ___ .",
+        example: "The boy has a ball.",
+        words: [
+            "The",
+            "boy",
+            "has",
+            "a",
+            "ball"
+        ]
+    },
+
+    {
+        pattern: "I can see a ___ .",
+        example: "I can see a rainbow.",
+        words: [
+            "I",
+            "can",
+            "see",
+            "a",
+            "rainbow"
+        ]
+    },
+
+    {
+        pattern: "The ___ is very ___ .",
+        example: "The elephant is very big.",
+        words: [
+            "The",
+            "elephant",
+            "is",
+            "very",
+            "big"
+        ]
+    },
+
+    {
+        pattern: "The ___ is ___ing .",
+        example: "The girl is dancing.",
+        words: [
+            "The",
+            "girl",
+            "is",
+            "dancing"
+        ]
+    },
+
+    {
+        pattern: "I like to ___ .",
+        example: "I like to draw.",
+        words: [
+            "I",
+            "like",
+            "to",
+            "draw"
+        ]
+    }
+
+];
+
+
+let sentenceIndex = 0;
+
+
+const sentencePattern =
+    document.getElementById(
+        "sentencePattern"
+    );
+
+
+const sentenceExample =
+    document.getElementById(
+        "sentenceExample"
+    );
+
+
+const sentenceWords =
+    document.getElementById(
+        "sentenceWords"
+    );
+
+
+const nextSentence =
+    document.getElementById(
+        "nextSentence"
+    );
+
+
+/* ========================================
+   SHOW SENTENCE
+======================================== */
+
+function showSentence() {
+
+    const sentence =
+        sentences[sentenceIndex];
+
+
+    sentencePattern.textContent =
+        sentence.pattern;
+
+
+    sentenceExample.textContent =
+        "Example: " +
+        sentence.example;
+
+
+    sentenceWords.innerHTML = "";
+
+
+    sentence.words.forEach(word => {
+
+        const button =
+            document.createElement("div");
+
+
+        button.className =
+            "sentenceWord";
+
+
+        button.textContent =
+            word;
+
+
+        sentenceWords.appendChild(
+            button
+        );
+
+    });
+
+}
+
+
+/* ========================================
+   NEXT SENTENCE
+======================================== */
+
+nextSentence.addEventListener(
+    "click",
+    () => {
+
+        sentenceIndex++;
+
+
+        if (
+            sentenceIndex >=
+            sentences.length
+        ) {
+
+            sentenceIndex = 0;
+
+        }
+
+
+        showSentence();
+
+    }
+);
+
+
+/* ========================================
    START
-========================================= */
+======================================== */
 
 displayWords();
 
+showSentence();
 
 </script>
 
-
 </body>
-
 </html>
